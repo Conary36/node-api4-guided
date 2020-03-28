@@ -6,9 +6,14 @@ const router = express.Router();
 
 router.use(express.json());
 
-router.get("/", (req, res) => {
-  const messageOfTheDay = process.env.MOTD || 'Hello World'
-  res.status(200).json({ message: messageOfTheDay });
+router.get("/", (req, res, next) => {
+  Shouts.find()
+    .then(shouts => {
+    const messageOfTheDay = process.env.MOTD || "Hello World";
+    res.status(200).json({ message: messageOfTheDay });
+    })
+    .catch(err => {next(err)})
+
 });
 
 router.get("/shouts", (req, res, next) => {
